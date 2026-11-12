@@ -1,16 +1,22 @@
+
 <script lang="ts">
-	import { ArrowRight, Bell, Menu, Search } from '@lucide/svelte';
+	import { ArrowRight, Bell, Menu } from '@lucide/svelte';
+
 	import { Button } from '#lib/components/ui';
+	import { Input } from '#lib/components/ui';
 
-	let { mobileOpen = $bindable(false) } = $props();
+	let { mobileOpen = $bindable(false) } = $props<{
+		mobileOpen?: boolean;
+	}>();
+
 	let query = $state('');
-	let searchInput: HTMLInputElement;
+	let searchInput: HTMLInputElement | undefined;
 
-	// Keyboard shortcut mirrors the familiar command palette affordance.
-	// It focuses the search field only; global result filtering is intentionally
-	// left for the future search endpoint rather than showing fake results.
 	function handleShortcut(event: KeyboardEvent) {
-		if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+		if (
+			(event.metaKey || event.ctrlKey) &&
+			event.key.toLowerCase() === 'k'
+		) {
 			event.preventDefault();
 			searchInput?.focus();
 		}
@@ -19,48 +25,86 @@
 
 <svelte:window onkeydown={handleShortcut} />
 
-<header class="topbar" id="top">
-	<div class="topbar-inner">
-		<div class="header-start">
-			<Button variant="ghost" size="icon-sm" class="menu-toggle" aria-label="Open navigation" aria-expanded={mobileOpen} onclick={() => (mobileOpen = true)}>
-				<Menu size={19} />
+<header
+	id="top"
+	class="sticky top-0 z-30 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80"
+>
+	<div
+		class="flex min-h-16 items-center justify-between gap-3 px-4 sm:px-6 lg:px-8"
+	>
+		<!-- Left: Navigation and Search -->
+		<div class="flex min-w-0 flex-1 items-center gap-3">
+
+			<Button
+				variant="ghost"
+				size="icon"
+				class="size-9 shrink-0 md:hidden"
+				aria-label="Open navigation"
+				aria-expanded={mobileOpen}
+				onclick={() => (mobileOpen = true)}
+			>
+				<Menu class="size-[19px]" />
 			</Button>
-			<label class="search-box">
-				<Search size={16} aria-hidden="true" />
-				<input bind:this={searchInput} bind:value={query} type="search" placeholder="Search voices, projects..." aria-label="Search voices or projects" />
-				<kbd>⌘ + K</kbd>
-			</label>
+
+			<div class="relative w-full max-w-[480px]">
+				<svg
+					class="pointer-events-none absolute left-3 top-1/2 z-10 size-4 -translate-y-1/2 text-muted-foreground"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					aria-hidden="true"
+				>
+					<circle cx="11" cy="11" r="8" />
+					<path d="m21 21-4.35-4.35" />
+				</svg>
+
+				<Input
+					bind:this={searchInput}
+					bind:value={query}
+					id="dashboard-global-search"
+					type="search"
+					placeholder="Search voices, projects..."
+					aria-label="Search voices or projects"
+					class="h-9 rounded-full border-transparent bg-muted pl-9 pr-14 text-xs shadow-none focus-visible:bg-background"
+				/>
+
+				<kbd
+					class="pointer-events-none absolute right-3 top-1/2 hidden -translate-y-1/2 rounded border border-border bg-background px-1.5 py-0.5 text-[10px] text-muted-foreground sm:inline-flex"
+				>
+					⌘ K
+				</kbd>
+			</div>
 		</div>
-		<div class="header-actions">
-			<Button variant="ghost" size="icon-sm" class="notification" aria-label="Notifications">
-				<Bell size={18} />
-				<span class="notification-dot"></span>
+
+		<!-- Right: Actions -->
+		<div class="flex shrink-0 items-center gap-2 sm:gap-3">
+
+			<Button
+				variant="ghost"
+				size="icon"
+				class="relative size-9 text-muted-foreground"
+				aria-label="Notifications"
+			>
+				<Bell class="size-[18px]" />
+
+				<span
+					class="absolute right-2 top-2 size-1.5 rounded-full bg-primary ring-2 ring-background"
+					aria-hidden="true"
+				/>
 			</Button>
-			<Button href="#studio" class="header-cta"><span>Generate Speech</span><ArrowRight size={15} /></Button>
+
+			<Button
+				href="#studio"
+				class="h-9 gap-2 rounded-full px-3 text-xs sm:px-4"
+			>
+				<span class="hidden sm:inline">
+					Generate Speech
+				</span>
+
+				<ArrowRight class="size-[15px]" />
+			</Button>
 		</div>
 	</div>
 </header>
-
-<style>
-	.topbar { position: sticky; top: 0; z-index: 30; border-bottom: 1px solid #e8e9e7; background: rgb(255 255 255 / 92%); backdrop-filter: blur(14px); }
-	.topbar-inner { display: flex; min-height: 64px; align-items: center; justify-content: space-between; gap: 18px; padding: 0 34px; }
-	.header-start, .header-actions { display: flex; align-items: center; gap: 12px; }
-	.search-box { display: flex; width: min(480px, 52vw); height: 36px; align-items: center; gap: 9px; border: 0; border-radius: 999px; background: #f3f4f6; padding: 0 12px; color: #94a3b8; }
-	.search-box input { width: 100%; min-width: 0; border: 0; outline: 0; background: transparent; color: #334155; font-size: 11px; }
-	.search-box input::placeholder { color: #94a3b8; }
-	.search-box kbd { flex: 0 0 auto; border: 1px solid #e2e8f0; border-radius: 4px; background: #fff; padding: 2px 5px; color: #64748b; font-size: 9px; }
-	:global(.header-cta) { min-height: 35px; border-radius: 999px; background: #111827; color: #fff; font-size: 11px; }
-	:global(.header-cta:hover) { background: #1f2937; }
-	:global(.notification) { position: relative; color: #475569; }
-	.notification-dot { position: absolute; top: 7px; right: 7px; width: 6px; height: 6px; border: 1px solid white; border-radius: 50%; background: #111827; }
-	:global(.menu-toggle) { display: none; }
-	@media (max-width: 760px) {
-		.topbar-inner { min-height: 58px; padding: 0 16px; }
-		:global(.menu-toggle) { display: inline-flex; }
-		.search-box { width: min(52vw, 320px); }
-		.search-box kbd, :global(.notification) { display: none; }
-		.header-actions { gap: 7px; }
-		:global(.header-cta) { width: 36px; padding: 0; }
-		:global(.header-cta span) { display: none; }
-	}
-</style>
