@@ -4,9 +4,9 @@
 
 	import { Button, Input } from '#lib/components/ui';
 
-	let { mobileOpen = $bindable(false) } = $props<{
+	let { mobileOpen = $bindable(false) }: {
 		mobileOpen?: boolean;
-	}>();
+	} = $props();
 
 	let query = $state('');
 	let searchInput = $state<HTMLInputElement | null>(null);

@@ -24,9 +24,9 @@
 
 	let {
 		selectedVoice = $bindable('Ayesha')
-	} = $props<{
+	}: {
 		selectedVoice?: string;
-	}>();
+	} = $props();
 
 	let text = $state('');
 	let language = $state('bn-BD');

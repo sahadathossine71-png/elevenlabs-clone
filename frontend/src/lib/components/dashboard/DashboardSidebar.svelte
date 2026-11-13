@@ -23,10 +23,10 @@
   let {
     mobileOpen = $bindable(false),
     activeSection = $bindable<Section>('overview'),
-  } = $props<{
+  }: {
     mobileOpen?: boolean;
     activeSection?: Section;
-  }>();
+  } = $props();
 
   const navigation = [
     {

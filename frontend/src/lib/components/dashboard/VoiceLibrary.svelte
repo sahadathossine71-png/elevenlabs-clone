@@ -21,9 +21,9 @@
 
 	let {
 		selectedVoice = $bindable('Ayesha')
-	} = $props<{
+	}: {
 		selectedVoice?: string;
-	}>();
+	} = $props();
 
 	const avatarStyles: Record<string, string> = {
 		rose: 'bg-rose-500/10 text-rose-700 dark:text-rose-300',

@@ -9,7 +9,7 @@
 		id,
 		href = '#',
 		linkLabel = 'View all'
-	} = $props<{ title: string; id?: string; href?: string; linkLabel?: string }>();
+	}: { title: string; id?: string; href?: string; linkLabel?: string } = $props();
 </script>
 
 <div class="section-heading">
