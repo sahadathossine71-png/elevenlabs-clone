@@ -32,12 +32,8 @@
 	let language = $state('bn-BD');
 	let showAdvanced = $state(false);
 
-	// Shadcn Slider uses number[] values.
-	let rateValue = $state([1]);
-	let pitchValue = $state([1]);
-
-	let rate = $derived(rateValue[0] ?? 1);
-	let pitch = $derived(pitchValue[0] ?? 1);
+	let rate = $state(1);
+	let pitch = $state(1);
 
 	let message = $state('');
 
@@ -47,6 +43,11 @@
 		{ name: 'Sadia', kind: 'Expressive · Female' },
 		{ name: 'Tanvir', kind: 'Conversational · Male' }
 	];
+
+	const voiceOptions = voices.map((voice) => ({
+		value: voice.name,
+		label: voice.name
+	}));
 
 	const languages = [
 		{ value: 'bn-BD', label: 'Bangla (Bangladesh)' },
@@ -141,41 +142,30 @@
 	<!-- Settings -->
 	<div class="mb-4 flex flex-wrap items-center gap-2">
 		<!-- Language -->
-		<Select.Root type="single" bind:value={language}>
-			<Select.Trigger class="h-9 w-full rounded-full sm:w-auto sm:min-w-[205px]">
-				<Globe2 class="mr-2 size-4 text-muted-foreground" />
-				<Select.Value placeholder="Select language" />
-			</Select.Trigger>
-
-			<Select.Content>
-				{#each languages as item (item.value)}
-					<Select.Item value={item.value}>
-						{item.label}
-					</Select.Item>
-				{/each}
-			</Select.Content>
-		</Select.Root>
+		<Select
+			bind:value={language}
+			options={languages}
+			placeholder="Select language"
+			aria-label="Select language"
+			class="h-9 w-full rounded-full sm:w-auto sm:min-w-[205px]"
+		>
+			{#snippet icon()}
+				<Globe2 class="size-4" />
+			{/snippet}
+		</Select>
 
 		<!-- Voice -->
-		<Select.Root type="single" bind:value={selectedVoice}>
-			<Select.Trigger class="h-9 w-full rounded-full sm:w-auto sm:min-w-[150px]">
-				<Volume2 class="mr-2 size-4 text-muted-foreground" />
-				<Select.Value placeholder="Select voice" />
-			</Select.Trigger>
-
-			<Select.Content>
-				{#each voices as voice (voice.name)}
-					<Select.Item value={voice.name}>
-						<div class="flex flex-col gap-0.5">
-							<span>{voice.name}</span>
-							<span class="text-xs text-muted-foreground">
-								{voice.kind}
-							</span>
-						</div>
-					</Select.Item>
-				{/each}
-			</Select.Content>
-		</Select.Root>
+		<Select
+			bind:value={selectedVoice}
+			options={voiceOptions}
+			placeholder="Select voice"
+			aria-label="Select voice"
+			class="h-9 w-full rounded-full sm:w-auto sm:min-w-[150px]"
+		>
+			{#snippet icon()}
+				<Volume2 class="size-4" />
+			{/snippet}
+		</Select>
 
 		<Button
 			variant="outline"
@@ -273,8 +263,10 @@
 						</output>
 					</div>
 
-					<Slider.Root
-						bind:value={rateValue}
+					<Slider
+						id="speech-speed"
+						aria-label="Speech speed"
+						bind:value={rate}
 						min={0.6}
 						max={1.5}
 						step={0.1}
@@ -305,8 +297,10 @@
 						</output>
 					</div>
 
-					<Slider.Root
-						bind:value={pitchValue}
+					<Slider
+						id="speech-pitch"
+						aria-label="Speech pitch"
+						bind:value={pitch}
 						min={0.7}
 						max={1.3}
 						step={0.1}

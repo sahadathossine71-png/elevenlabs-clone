@@ -189,16 +189,13 @@
 </aside>
 
 <!-- Mobile sidebar -->
-<Sheet.Root bind:open={mobileOpen}>
-  <Sheet.Content
+<div class="md:hidden">
+  <Sheet
+    bind:open={mobileOpen}
     side="left"
-    class="w-[min(18rem,85vw)] p-0"
+    label="Main navigation"
+    class="w-[min(18rem,85vw)]"
   >
-    <Sheet.Title class="sr-only">Main navigation</Sheet.Title>
-    <Sheet.Description class="sr-only">
-      Navigate between Vocalis dashboard sections.
-    </Sheet.Description>
-
     {@render sidebarContent(true)}
-  </Sheet.Content>
-</Sheet.Root>
+  </Sheet>
+</div>

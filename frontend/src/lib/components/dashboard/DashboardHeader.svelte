@@ -2,15 +2,14 @@
 <script lang="ts">
 	import { ArrowRight, Bell, Menu } from '@lucide/svelte';
 
-	import { Button } from '#lib/components/ui';
-	import { Input } from '#lib/components/ui';
+	import { Button, Input } from '#lib/components/ui';
 
 	let { mobileOpen = $bindable(false) } = $props<{
 		mobileOpen?: boolean;
 	}>();
 
 	let query = $state('');
-	let searchInput: HTMLInputElement | undefined;
+	let searchInput = $state<HTMLInputElement | null>(null);
 
 	function handleShortcut(event: KeyboardEvent) {
 		if (
@@ -61,7 +60,7 @@
 				</svg>
 
 				<Input
-					bind:this={searchInput}
+					bind:ref={searchInput}
 					bind:value={query}
 					id="dashboard-global-search"
 					type="search"
@@ -92,7 +91,7 @@
 				<span
 					class="absolute right-2 top-2 size-1.5 rounded-full bg-primary ring-2 ring-background"
 					aria-hidden="true"
-				/>
+				></span>
 			</Button>
 
 			<Button
