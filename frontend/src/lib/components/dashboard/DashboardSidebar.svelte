@@ -14,10 +14,10 @@
   import { Button, Sheet } from '#lib/components/ui';
 
   type Section =
-    | 'overview'
-    | 'studio'
-    | 'voices'
-    | 'projects'
+    | 'Home'
+    | 'Text_to_speech'
+    | 'voice_libary'
+    | 'voice_clone'
     | 'settings';
 
   let {
@@ -30,23 +30,23 @@
 
   const navigation = [
     {
-      id: 'overview',
-      label: 'Overview',
+      id: 'Home',
+      label: 'Home',
       icon: LayoutDashboard,
     },
     {
-      id: 'studio',
-      label: 'Speech Studio',
+      id: 'Text_to_speech',
+      label: 'Text To Speech',
       icon: AudioWaveform,
     },
     {
-      id: 'voices',
+      id: 'voice_libary',
       label: 'Voice Library',
       icon: AudioLines,
     },
     {
-      id: 'projects',
-      label: 'Projects',
+      id: 'voice_clone',
+      label: 'Voice Clone',
       icon: FolderOpen,
     },
   ] as const;
@@ -112,7 +112,7 @@
               <item.icon class="size-[18px] shrink-0" />
               <span>{item.label}</span>
 
-              {#if item.id === 'studio'}
+              {#if item.id === 'voice_clone'}
                 <span class="ml-auto rounded-md bg-primary/10 px-1.5 py-0.5 text-[10px] font-semibold text-primary">
                   NEW
                 </span>
