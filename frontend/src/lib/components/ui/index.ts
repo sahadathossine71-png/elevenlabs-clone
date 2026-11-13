@@ -8,14 +8,14 @@ export { Button, buttonVariants } from './button/index.js';
 export type { ButtonProps, ButtonSize, ButtonVariant } from './button/index.js';
 
 // Form components
-export { default as Input } from './input/Input.svelte';
-export { default as Select } from './select/Select.svelte';
-export { default as Slider } from './slider/Slider.svelte';
-export { default as Textarea } from './textarea/Textarea.svelte';
+export { default as Input } from './Input.svelte';
+export { default as Select } from './Select.svelte';
+export { default as Slider } from './Slider.svelte';
+export { default as Textarea } from './Textarea.svelte';
 
 // Sheet component
-export { default as Sheet } from './sheet/Sheet.svelte';
+export { default as Sheet } from './Sheet.svelte';
 
 // Display components
-export { default as Badge } from './badge/Badge.svelte';
-export * as Card from './card/index.js';
+export { default as Badge } from './Badge.svelte';
+export * as Card from './card-parts.js';
