@@ -15,3 +15,7 @@ export { default as Textarea } from './textarea/Textarea.svelte';
 
 // Sheet component
 export { default as Sheet } from './sheet/Sheet.svelte';
+
+// Display components
+export { default as Badge } from './badge/Badge.svelte';
+export * as Card from './card/index.js';
